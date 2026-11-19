@@ -1,0 +1,23 @@
+# Lab 2 – Session 3 – Question 2: Docker Network
+
+# 1. Create network
+docker network create mynetwork
+
+# 2. Create containers on the network
+docker run -dit --name container1 --network mynetwork alpine
+docker run -dit --name container2 --network mynetwork alpine
+docker ps
+
+# 3. Test name-based communication
+docker exec container1 ping -c 4 container2
+
+# 4. Find container2 IP
+docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' container2
+# IP observed: 172.21.0.3
+
+# 5. Test IP-based communication
+docker exec container1 ping -c 4 172.21.0.3
+
+# 6. Verify network and containers
+docker network inspect mynetwork
+docker ps
